@@ -7,6 +7,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Lox",
+            "request": "launch",
+            "mainClass": "main.java.com.craftinginterpreters.lox.Lox",
+            "projectName": "Compiladores_1_32767e70"
+        },
+        {
+            "type": "java",
+            "name": "AstPrinter",
+            "request": "launch",
+            "mainClass": "main.java.com.craftinginterpreters.lox.AstPrinter",
+            "projectName": "Compiladores_1_32767e70"
+        },
+        {
+            "type": "java",
             "name": "GenerateAst",
             "request": "launch",
             "mainClass": "main.java.com.craftinginterpreters.tool.GenerateAst",
