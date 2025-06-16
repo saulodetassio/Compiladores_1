@@ -7,25 +7,28 @@ import java.util.List;
 
 public class GenerateAst {
   public static void main(String[] args) throws IOException {
-    if (args.length != 1) {
-      System.err.println("Usage: generate_ast <output directory>");
-      System.exit(64);
-    }
-    String outputDir = args[0];
+    // ADICIONADO: O caminho de saída agora está fixo diretamente no código.
+    // Ele aponta para a pasta 'lox' a partir da raiz do seu projeto.
+    String outputDir = "src/main/java/com/craftinginterpreters/lox";
+
     defineAst(outputDir, "Expr", Arrays.asList(
       "Binary   : Expr left, Token operator, Expr right",
       "Grouping : Expr expression",
       "Literal  : Object value",
       "Unary    : Token operator, Expr right"
     ));
+
+    System.out.println("Arquivo Expr.java gerado com sucesso em: " + outputDir);
   }
 
+  // O resto do código permanece o mesmo, pois ele já estava correto.
   private static void defineAst(
       String outputDir, String baseName, List<String> types)
       throws IOException {
     String path = outputDir + "/" + baseName + ".java";
     PrintWriter writer = new PrintWriter(path, "UTF-8");
 
+    // A declaração de pacote para o arquivo gerado (Expr.java) está correta.
     writer.println("package com.craftinginterpreters.lox;");
     writer.println();
     writer.println("import java.util.List;");
