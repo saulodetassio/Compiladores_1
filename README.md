@@ -31,6 +31,7 @@ Compiladores_1/
 │                   │   ├── AstPrinter.java   # Implementação do Visitor para imprimir a AST
 │                   │   ├── Expr.java         # Classes da AST (gerado automaticamente)
 │                   │   ├── Lox.java          # Ponto de entrada do interpretador
+│                   │   ├── Parser.java       # Análise de expressões
 │                   │   ├── Scanner.java      # Implementação do analisador léxico
 │                   │   ├── Token.java        # Representação de um token
 │                   │   └── TokenType.java    # Enumeração dos tipos de tokens
@@ -49,6 +50,9 @@ Todo o projeto pode ser compilado e executado a partir de um ambiente de desenvo
         A saída esperada no console é a representação em texto de uma árvore de exemplo:
 
         (* (- 123) (group 45.67))
+
+        
+    Gerado Analise de Parser (Fase atual do projeto)
 
 👥 Participantes
 
