@@ -1,4 +1,4 @@
-package main.java.com.craftinginterpreters.lox; // CORRIGIDO AQUI
+package main.java.com.craftinginterpreters.lox;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,10 +7,12 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-// import java.util.Scanner; // REMOVIDO: Você não precisa disso, pois usa sua própria classe Scanner
 
 public class Lox {
-  static boolean hadError = false; // Declaração ÚNICA de hadError
+  private static final Interpreter interpreter = new Interpreter(); // NOVO!
+
+  static boolean hadError = false;
+  static boolean hadRuntimeError = false; // NOVO!
 
   public static void main(String[] args) throws IOException {
     if (args.length > 1) {
@@ -26,7 +28,9 @@ public class Lox {
   private static void runFile(String path) throws IOException {
     byte[] bytes = Files.readAllBytes(Paths.get(path));
     run(new String(bytes, Charset.defaultCharset()));
+
     if (hadError) System.exit(65);
+    if (hadRuntimeError) System.exit(70); // NOVO!
   }
 
   private static void runPrompt() throws IOException {
@@ -38,43 +42,60 @@ public class Lox {
       String line = reader.readLine();
       if (line == null) break;
       run(line);
-      hadError = false; // Reseta a flag de erro para o próximo comando no prompt
+      hadError = false;
     }
   }
 
-  // Definição ÚNICA do método run(String source)
   private static void run(String source) {
-    // A lógica de escaneamento e tokenização deve vir aqui
-    Scanner scanner = new Scanner(source); // Isso usa sua classe Scanner do mesmo pacote
+    Scanner scanner = new Scanner(source);
     List<Token> tokens = scanner.scanTokens();
+
     Parser parser = new Parser(tokens);
     Expr expression = parser.parse();
 
-    // Stop if there was a syntax error.
     if (hadError) return;
 
-    System.out.println(new AstPrinter().print(expression));
-    // Por enquanto, apenas imprima os tokens.
-    for (Token token : tokens) {
-      System.out.println(token);
-    }
+    // Avalia a expressão usando o Interpreter
+    Object value = interpreter.evaluate(expression);
+    System.out.println(stringify(value));
+
+    // Por enquanto, apenas imprima os tokens (opcional)
+    // for (Token token : tokens) {
+    //   System.out.println(token);
+    // }
   }
 
-  // Definição ÚNICA do método error(int line, String message)
   static void error(int line, String message) {
     report(line, "", message);
   }
 
-  // Definição ÚNICA do método report(int line, String where, String message)
   private static void report(int line, String where, String message) {
     System.err.println("[line " + line + "] Error" + where + ": " + message);
     hadError = true;
   }
-    static void error(Token token, String message) {
+
+  static void error(Token token, String message) {
     if (token.type == TokenType.EOF) {
       report(token.line, " at end", message);
     } else {
       report(token.line, " at '" + token.lexeme + "'", message);
     }
+  }
+
+  static void runtimeError(RuntimeError error) { // NOVO!
+    System.err.println(error.getMessage() + "\n[line " + error.token.line + "]");
+    hadRuntimeError = true;
+  }
+
+  private static String stringify(Object object) { // Igual ao Interpreter
+    if (object == null) return "nil";
+    if (object instanceof Double) {
+      String text = object.toString();
+      if (text.endsWith(".0")) {
+        text = text.substring(0, text.length() - 2);
+      }
+      return text;
+    }
+    return object.toString();
   }
 }
