@@ -1,0 +1,44 @@
+// Teste completo e corrigido para Capítulos 8 e 9
+
+print "--- Iniciando Teste de Funcionalidade ---";
+
+var numero = 10;
+var texto = "Lox";
+
+print "Variavel numero:"; // Imprime o texto
+print numero;            // Imprime o número
+print "Variavel texto: " + texto; // String + String é válido
+
+numero = numero + 5;
+print "Novo valor de 'numero':";
+print numero;
+
+print ""; // Linha em branco para separar
+print "--- Testando Bloco e Escopo ---";
+print "Antes do bloco, 'numero' eh:";
+print numero;
+{
+  var numero = 99;
+  var local = "dentro do bloco";
+  print "Dentro do bloco, 'numero' eh:";
+  print numero;
+  print "Variavel local:";
+  print local;
+}
+print "Depois do bloco, 'numero' voltou a ser:";
+print numero;
+
+print "";
+print "--- Testando Condicional IF ---";
+
+if (numero > 10 and numero < 20) {
+  print "Teste 'if' com 'and' logico: SUCESSO";
+} else {
+  print "Teste 'if' com 'and' logico: FALHA";
+}
+
+if (texto == "Java" or texto == "Lox") {
+  print "Teste 'if' com 'or' logico: SUCESSO";
+}
+
+print "--- Fim do Teste ---";

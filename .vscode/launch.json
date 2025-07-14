@@ -1,8 +1,4 @@
-
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
@@ -14,51 +10,32 @@
         },
         {
             "type": "java",
-            "name": "AstPrinter",
+            "name": "▶️ Gerar AST",
             "request": "launch",
-            "mainClass": "main.java.com.craftinginterpreters.lox.AstPrinter",
+            "mainClass": "main.java.com.craftinginterpreters.GenerateAst",
             "projectName": "Compiladores_1_32767e70"
         },
         {
             "type": "java",
-            "name": "GenerateAst",
+            "name": "▶️ Executar Lox (Interativo / REPL)",
             "request": "launch",
-            "mainClass": "main.java.com.craftinginterpreters.tool.GenerateAst",
+            "mainClass": "main.java.com.craftinginterpreters.Lox",
             "projectName": "Compiladores_1_32767e70"
         },
         {
             "type": "java",
-            "name": "Launch Java Program",
+            "name": "▶️ Executar Lox (Script de Teste)",
             "request": "launch",
-            "mainClass": ""
-        },
-        {
-            "type": "java",
-            "name": "Current File",
-            "request": "launch",
-            "mainClass": "${file}"
-        },
-        {
-            "type": "java",
-            "name": "AstPrinter",
-            "request": "launch",
-            "mainClass": "com.craftinginterpreters.lox.AstPrinter",
-            "projectName": "Compiladores_1_32767e70"
-        },
-        {
-            "type": "java",
-            "name": "Lox",
-            "request": "launch",
-            "mainClass": "com.craftinginterpreters.lox.Lox",
-            "projectName": "Compiladores_1_32767e70"
-        },
-        {
-            "type": "java",
-            "name": "GenerateAst",
-            "request": "launch",
-            "mainClass": "com.craftinginterpreters.tool.GenerateAst",
+            "mainClass": "main.java.com.craftinginterpreters.lox.Lox",
             "projectName": "Compiladores_1_32767e70",
-            "args": "src/main/java/com/craftinginterpreters/lox"
+            "args": "teste_completo.lox"
+        },
+        {
+            "type": "java",
+            "name": "Testar Impressora AST",
+            "request": "launch",
+            "mainClass": "main.java.com.craftinginterpreters.AstPrinter",
+            "projectName": "Compiladores_1_32767e70"
         }
     ]
 }

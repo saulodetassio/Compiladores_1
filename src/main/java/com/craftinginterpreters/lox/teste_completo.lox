@@ -1,0 +1,40 @@
+// Teste completo para Capítulos 8 e 9
+
+print "--- Iniciando Teste de Funcionalidade ---";
+
+// Testando 'var' e 'print' com diferentes tipos
+var numero = 10;
+var texto = "Lox";
+print "Variavel numero: " + numero;
+print "Variavel texto: " + texto;
+
+// Testando atribuição em uma variável existente
+numero = numero + 5;
+print "Novo valor de 'numero': " + numero; // Deve ser 15
+
+print ""; // Linha em branco para separar
+print "--- Testando Bloco e Escopo ---";
+print "Antes do bloco, 'numero' eh: " + numero;
+{
+  var numero = 99; // Teste de 'sombra' (shadowing)
+  var local = "dentro do bloco";
+  print "Dentro do bloco, 'numero' eh: " + numero;
+  print "Variavel 'local' existe aqui: " + local;
+}
+// print local; // Descomentar esta linha deveria causar um erro de runtime, o que é esperado!
+print "Depois do bloco, 'numero' voltou a ser: " + numero;
+
+print "";
+print "--- Testando Condicional IF ---";
+
+if (numero > 10 and numero < 20) {
+  print "Teste 'if' com 'and' logico: SUCESSO";
+} else {
+  print "Teste 'if' com 'and' logico: FALHA";
+}
+
+if (texto == "Java" or texto == "Lox") {
+  print "Teste 'if' com 'or' logico: SUCESSO";
+}
+
+print "--- Fim do Teste ---";

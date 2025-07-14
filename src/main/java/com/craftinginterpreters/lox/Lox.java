@@ -9,10 +9,9 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class Lox {
-  private static final Interpreter interpreter = new Interpreter(); // NOVO!
-
+  private static final Interpreter interpreter = new Interpreter();
   static boolean hadError = false;
-  static boolean hadRuntimeError = false; // NOVO!
+  static boolean hadRuntimeError = false;
 
   public static void main(String[] args) throws IOException {
     if (args.length > 1) {
@@ -29,8 +28,9 @@ public class Lox {
     byte[] bytes = Files.readAllBytes(Paths.get(path));
     run(new String(bytes, Charset.defaultCharset()));
 
+    // Indicate an error in the exit code.
     if (hadError) System.exit(65);
-    if (hadRuntimeError) System.exit(70); // NOVO!
+    if (hadRuntimeError) System.exit(70);
   }
 
   private static void runPrompt() throws IOException {
@@ -49,20 +49,13 @@ public class Lox {
   private static void run(String source) {
     Scanner scanner = new Scanner(source);
     List<Token> tokens = scanner.scanTokens();
-
     Parser parser = new Parser(tokens);
-    Expr expression = parser.parse();
+    List<Stmt> statements = parser.parse();
 
+    // Stop if there was a syntax error.
     if (hadError) return;
 
-    // Avalia a expressão usando o Interpreter
-    Object value = interpreter.evaluate(expression);
-    System.out.println(stringify(value));
-
-    // Por enquanto, apenas imprima os tokens (opcional)
-    // for (Token token : tokens) {
-    //   System.out.println(token);
-    // }
+    interpreter.interpret(statements);
   }
 
   static void error(int line, String message) {
@@ -70,7 +63,8 @@ public class Lox {
   }
 
   private static void report(int line, String where, String message) {
-    System.err.println("[line " + line + "] Error" + where + ": " + message);
+    System.err.println(
+        "[line " + line + "] Error" + where + ": " + message);
     hadError = true;
   }
 
@@ -82,20 +76,9 @@ public class Lox {
     }
   }
 
-  static void runtimeError(RuntimeError error) { // NOVO!
-    System.err.println(error.getMessage() + "\n[line " + error.token.line + "]");
+  static void runtimeError(RuntimeError error) {
+    System.err.println(error.getMessage() +
+        "\n[line " + error.token.line + "]");
     hadRuntimeError = true;
-  }
-
-  private static String stringify(Object object) { // Igual ao Interpreter
-    if (object == null) return "nil";
-    if (object instanceof Double) {
-      String text = object.toString();
-      if (text.endsWith(".0")) {
-        text = text.substring(0, text.length() - 2);
-      }
-      return text;
-    }
-    return object.toString();
   }
 }
