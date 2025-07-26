@@ -1,11 +1,14 @@
 package main.java.com.craftinginterpreters.lox;
 
+
 import java.util.List;
 
 class LoxFunction implements LoxCallable {
     private final Stmt.Function declaration;
+    private final Environment closure; // Adicionado no Capítulo 11, mas bom já ter.
 
-    LoxFunction(Stmt.Function declaration) {
+    LoxFunction(Stmt.Function declaration, Environment closure) {
+        this.closure = closure;
         this.declaration = declaration;
     }
 
@@ -16,13 +19,22 @@ class LoxFunction implements LoxCallable {
 
     @Override
     public Object call(Interpreter interpreter, List<Object> arguments) {
-        Environment environment = new Environment(interpreter.globals);
+        // Cria um novo ambiente para a função, aninhado no ambiente onde a função foi declarada (closure).
+        Environment environment = new Environment(closure); 
         for (int i = 0; i < declaration.params.size(); i++) {
-            environment.define(declaration.params.get(i).lexeme,
-                               arguments.get(i));
+            environment.define(declaration.params.get(i).lexeme, arguments.get(i));
         }
 
-        interpreter.executeBlock(declaration.body, environment);
+        // --- A CORREÇÃO ESTÁ AQUI ---
+        try {
+            // Executa o corpo da função no novo ambiente.
+            interpreter.executeBlock(declaration.body, environment);
+        } catch (Return returnValue) {
+            // Se uma exceção 'Return' for lançada, a capturamos e retornamos seu valor.
+            return returnValue.value;
+        }
+
+        // Se a função terminar sem um 'return' explícito, ela retorna 'nil' (null).
         return null;
     }
 

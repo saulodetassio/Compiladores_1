@@ -66,7 +66,8 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     @Override
     public Void visitFunctionStmt(Stmt.Function stmt) {
-        LoxFunction function = new LoxFunction(stmt);
+        // AJUSTE AQUI: Passamos o 'environment' atual para criar o closure.
+        LoxFunction function = new LoxFunction(stmt, environment);
         environment.define(stmt.name.lexeme, function);
         return null;
     }
@@ -118,7 +119,6 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         Object right = evaluate(expr.right);
 
         switch (expr.operator.type) {
-            // ... (cases for GREATER, MINUS, etc. are the same)
             case GREATER:
                 checkNumberOperands(expr.operator, left, right);
                 return (double) left > (double) right;
