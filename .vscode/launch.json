@@ -3,6 +3,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "GenerateAst",
+            "request": "launch",
+            "mainClass": "main.java.com.craftinginterpreters.tool.GenerateAst",
+            "projectName": "Compiladores_1_32767e70"
+        },
+        {
+            "type": "java",
             "name": "Lox",
             "request": "launch",
             "mainClass": "main.java.com.craftinginterpreters.lox.Lox",
