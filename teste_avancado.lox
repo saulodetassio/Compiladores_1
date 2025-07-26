@@ -1,0 +1,108 @@
+// ---------------------------------------------------
+// Script de Teste Avançado para o Interpretador Lox
+// Testando a combinação de todas as funcionalidades.
+// ---------------------------------------------------
+
+print "--- 1. Testando Funcoes de Ordem Superior (Closures) ---";
+
+fun makeAdder(n) {
+  // Retorna uma NOVA função que "lembra" do valor de 'n'.
+  fun adder(x) {
+    return n + x;
+  }
+  return adder;
+}
+
+var add5 = makeAdder(5);
+var add10 = makeAdder(10);
+
+print "add5(3) = " + add5(3); // Deve imprimir 8
+print "add10(3) = " + add10(3); // Deve imprimir 13
+
+
+print "";
+print "--- 2. Simulando Laco 'for' com Funcao Recursiva ---";
+
+fun loop(n) {
+  if (n > 0) {
+    print "Contagem regressiva: " + n;
+    loop(n - 1);
+  }
+}
+
+loop(3);
+
+
+print "";
+print "--- 3. Testando Classes com Metodos Encadeados ('return this') ---";
+
+class Contador {
+  init(valor) {
+    this.valor = valor;
+  }
+
+  incrementa() {
+    this.valor = this.valor + 1;
+    print "Valor atual: " + this.valor;
+    return this; // Retorna a própria instância para encadeamento.
+  }
+}
+
+var c = Contador(0);
+print "Iniciando contador e encadeando chamadas:";
+c.incrementa().incrementa().incrementa(); // Deve imprimir 1, 2, 3
+
+
+print "";
+print "--- 4. Testando Heranca e Polimorfismo ---";
+
+class Animal {
+  falar() {
+    return "Um animal faz um som.";
+  }
+}
+
+class Cachorro < Animal {
+  falar() {
+    return "Au au!";
+  }
+}
+
+class Gato < Animal {
+  falar() {
+    return "Miau!";
+  }
+}
+
+fun fazerBarulho(animal) {
+  print "O animal diz: " + animal.falar();
+}
+
+fazerBarulho(Cachorro()); // Polimorfismo em ação
+fazerBarulho(Gato());    // Mesma função, comportamento diferente
+
+
+print "";
+print "--- 5. Testando Heranca em Cadeia com 'super' ---";
+class A {
+  metodo() {
+    print "Executando A";
+  }
+}
+class B < A {
+  metodo() {
+    print "Executando B";
+    super.metodo();
+  }
+}
+class C < B {
+  metodo() {
+    print "Executando C";
+    super.metodo();
+  }
+}
+
+C().metodo(); // Deve imprimir C, B, A
+
+print "";
+print "--- FIM DO TESTE AVANCADO ---";

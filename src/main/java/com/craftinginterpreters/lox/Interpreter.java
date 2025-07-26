@@ -1,5 +1,6 @@
 package main.java.com.craftinginterpreters.lox;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,8 +59,6 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
             this.environment = previous;
         }
     }
-
-    // --- Métodos de Visita para Declarações (Stmt) ---
 
     @Override
     public Void visitBlockStmt(Stmt.Block stmt) {
@@ -148,8 +147,6 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         return null;
     }
 
-    // --- Métodos de Visita para Expressões (Expr) ---
-
     @Override
     public Object visitAssignExpr(Expr.Assign expr) {
         Object value = evaluate(expr.value);
@@ -165,43 +162,52 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     @Override
     public Object visitBinaryExpr(Expr.Binary expr) {
         Object left = evaluate(expr.left);
-        Object right = evaluate(expr.right);
+        Object right = evaluate(expr.right); 
 
         switch (expr.operator.type) {
             case GREATER:
                 checkNumberOperands(expr.operator, left, right);
-                return (double) left > (double) right;
+                return (double)left > (double)right;
             case GREATER_EQUAL:
                 checkNumberOperands(expr.operator, left, right);
-                return (double) left >= (double) right;
+                return (double)left >= (double)right;
             case LESS:
                 checkNumberOperands(expr.operator, left, right);
-                return (double) left < (double) right;
+                return (double)left < (double)right;
             case LESS_EQUAL:
                 checkNumberOperands(expr.operator, left, right);
-                return (double) left <= (double) right;
+                return (double)left <= (double)right;
             case BANG_EQUAL: return !isEqual(left, right);
             case EQUAL_EQUAL: return isEqual(left, right);
             case MINUS:
                 checkNumberOperands(expr.operator, left, right);
-                return (double) left - (double) right;
+                return (double)left - (double)right;
             case PLUS:
                 if (left instanceof Double && right instanceof Double) {
-                    return (double) left + (double) right;
-                }
+                    return (double)left + (double)right;
+                } 
                 if (left instanceof String && right instanceof String) {
-                    return (String) left + (String) right;
+                    return (String)left + (String)right;
+                }
+                // AJUSTE PARA CONCATENAR STRING COM NÚMERO
+                if (left instanceof String) {
+                    return (String)left + stringify(right);
+                }
+                if (right instanceof String) {
+                    return stringify(left) + (String)right;
                 }
                 throw new RuntimeError(expr.operator, "Operands must be two numbers or two strings.");
             case SLASH:
                 checkNumberOperands(expr.operator, left, right);
-                return (double) left / (double) right;
+                if ((double)right == 0) throw new RuntimeError(expr.operator, "Division by zero.");
+                return (double)left / (double)right;
             case STAR:
                 checkNumberOperands(expr.operator, left, right);
-                return (double) left * (double) right;
+                return (double)left * (double)right;
         }
 
-        return null; // Unreachable.
+        // Unreachable.
+        return null;
     }
 
     @Override
@@ -302,7 +308,8 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
                 checkNumberOperand(expr.operator, right);
                 return -(double)right;
         }
-        return null; // Unreachable.
+        // Unreachable.
+        return null;
     }
 
     @Override
@@ -319,8 +326,6 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         }
     }
     
-    // --- MÉTODOS AUXILIARES ---
-
     private boolean isTruthy(Object object) {
         if (object == null) return false;
         if (object instanceof Boolean) return (boolean)object;

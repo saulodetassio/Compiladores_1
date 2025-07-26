@@ -17,34 +17,19 @@
         },
         {
             "type": "java",
-            "name": "🧪 Executar Teste de Classes (Cap. 12)",
+            "name": "✅ Executar Teste Geral",
             "request": "launch",
             "mainClass": "main.java.com.craftinginterpreters.lox.Lox",
             "projectName": "Compiladores_1_32767e70",
-            "args": "teste_classes.lox"
+            "args": "teste_geral.lox"
         },
         {
             "type": "java",
-            "name": "🧪 Executar Teste de Funções (Cap. 10)",
+            "name": "🔥 Executar Teste Avançado",
             "request": "launch",
             "mainClass": "main.java.com.craftinginterpreters.lox.Lox",
             "projectName": "Compiladores_1_32767e70",
-            "args": "teste_funcoes.lox"
-        },
-        {
-            "type": "java",
-            "name": "🧪 Executar Teste de Resolver (Cap. 11)",
-            "request": "launch",
-            "mainClass": "main.java.com.craftinginterpreters.lox.Lox",
-            "projectName": "Compiladores_1_32767e70",
-            "args": "teste_resolver.lox"
-        },
-        {
-            "type": "java",
-            "name": "Testar Impressora AST",
-            "request": "launch",
-            "mainClass": "main.java.com.craftinginterpreters.lox.AstPrinter",
-            "projectName": "Compiladores_1_32767e70"
+            "args": "teste_avancado.lox"
         }
     ]
 }

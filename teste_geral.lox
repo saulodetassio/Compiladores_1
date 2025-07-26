@@ -1,0 +1,104 @@
+// ---------------------------------------------------
+// Script de Teste Geral para o Interpretador Lox
+// Cobre funcionalidades dos Capítulos 8, 9, 10, 11 e 12.
+// ---------------------------------------------------
+
+print "--- 1. Testando Variaveis e Expressoes Basicas ---";
+var a = 10;
+var b = 20;
+print a + b; // 30
+a = b * 2;
+print a; // 40
+print "Ola, " + "Mundo!";
+
+
+print "";
+print "--- 2. Testando Blocos e Escopo Lexico ---";
+var c = "global";
+print "Antes do bloco: " + c; // global
+{
+  var c = "local";
+  print "Dentro do bloco: " + c; // local
+}
+print "Depois do bloco: " + c; // global
+
+
+print "";
+print "--- 3. Testando Controle de Fluxo (IF e Operadores Logicos) ---";
+if (a > b and b > 0) {
+  print "Logica AND: Correta!";
+}
+
+if (a < b or b > 0) {
+  print "Logica OR: Correta!";
+} else {
+  print "Logica OR: Incorreta!";
+}
+
+
+print "";
+print "--- 4. Testando Funcoes, Retorno e Recursao ---";
+
+fun fib(n) {
+  if (n <= 1) return n;
+  return fib(n - 2) + fib(n - 1);
+}
+
+print "Fibonacci de 7 eh: " + fib(7); // 13
+
+fun contador() {
+  var i = 0;
+  fun incrementa() {
+    i = i + 1;
+    print i;
+  }
+  return incrementa;
+}
+
+var f = contador();
+print "Testando closure (contador):";
+f(); // 1
+f(); // 2
+
+
+print "";
+print "--- 5. Testando Classes, Metodos, 'this' e 'init' ---";
+
+class Ponto {
+  init(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  descrever() {
+    print "Ponto em (" + this.x + ", " + this.y + ")";
+  }
+}
+
+var p1 = Ponto(3, 4);
+p1.descrever(); // Ponto em (3, 4)
+p1.x = 99;
+print "Novo X do p1: " + p1.x; // 99
+
+
+print "";
+print "--- 6. Testando Heranca e 'super' ---";
+
+class Ponto3D < Ponto {
+  init(x, y, z) {
+    super.init(x, y);
+    this.z = z;
+  }
+
+  descrever() {
+    super.descrever();
+    print "  -> Coordenada Z: " + this.z;
+  }
+}
+
+var p2 = Ponto3D(5, 6, 7);
+p2.descrever();
+
+
+print "";
+print "--- FIM DOS TESTES ---";
