@@ -1,0 +1,7 @@
+// Teste para o Resolver (Capítulo 11)
+
+var a = "global";
+{
+  var a = a; // ERRO! Tentando ler 'a' no seu próprio inicializador.
+  print a;
+}

@@ -3,45 +3,39 @@
     "configurations": [
         {
             "type": "java",
-            "name": "GenerateAst",
+            "name": "⚙️ Gerar AST",
             "request": "launch",
             "mainClass": "main.java.com.craftinginterpreters.tool.GenerateAst",
             "projectName": "Compiladores_1_32767e70"
         },
         {
             "type": "java",
-            "name": "Lox",
+            "name": "▶️ Executar Lox (Interativo / REPL)",
             "request": "launch",
             "mainClass": "main.java.com.craftinginterpreters.lox.Lox",
             "projectName": "Compiladores_1_32767e70"
         },
         {
             "type": "java",
-            "name": "▶️ Gerar AST",
-            "request": "launch",
-            "mainClass": "main.java.com.craftinginterpreters.GenerateAst",
-            "projectName": "Compiladores_1_32767e70"
-        },
-        {
-            "type": "java",
-            "name": "▶️ Executar Lox (Interativo / REPL)",
-            "request": "launch",
-            "mainClass": "main.java.com.craftinginterpreters.Lox",
-            "projectName": "Compiladores_1_32767e70"
-        },
-        {
-            "type": "java",
-            "name": "▶️ Executar Lox (Script de Teste)",
+            "name": "🧪 Executar Teste de Funções (Cap. 10)",
             "request": "launch",
             "mainClass": "main.java.com.craftinginterpreters.lox.Lox",
             "projectName": "Compiladores_1_32767e70",
-            "args": "teste_completo.lox"
+            "args": "teste_funcoes.lox"
+        },
+        {
+            "type": "java",
+            "name": "🧪 Executar Teste de Resolver (Cap. 11)",
+            "request": "launch",
+            "mainClass": "main.java.com.craftinginterpreters.lox.Lox",
+            "projectName": "Compiladores_1_32767e70",
+            "args": "teste_resolver.lox"
         },
         {
             "type": "java",
             "name": "Testar Impressora AST",
             "request": "launch",
-            "mainClass": "main.java.com.craftinginterpreters.AstPrinter",
+            "mainClass": "main.java.com.craftinginterpreters.lox.AstPrinter",
             "projectName": "Compiladores_1_32767e70"
         }
     ]
