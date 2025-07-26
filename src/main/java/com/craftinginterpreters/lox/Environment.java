@@ -1,5 +1,3 @@
-// Em lox/Environment.java
-
 package main.java.com.craftinginterpreters.lox;
 
 import java.util.HashMap;
@@ -15,6 +13,29 @@ class Environment {
 
     Environment(Environment enclosing) {
         this.enclosing = enclosing;
+    }
+
+    void define(String name, Object value) {
+        values.put(name, value);
+    }
+
+    // NOVO: Retorna o ambiente ancestral a uma certa distância.
+    Environment ancestor(int distance) {
+        Environment environment = this;
+        for (int i = 0; i < distance; i++) {
+            environment = environment.enclosing;
+        }
+        return environment;
+    }
+
+    // NOVO: Pega o valor de uma variável a uma distância específica.
+    Object getAt(int distance, String name) {
+        return ancestor(distance).values.get(name);
+    }
+
+    // NOVO: Atribui um valor a uma variável a uma distância específica.
+    void assignAt(int distance, Token name, Object value) {
+        ancestor(distance).values.put(name.lexeme, value);
     }
 
     Object get(Token name) {
@@ -39,9 +60,5 @@ class Environment {
         }
 
         throw new RuntimeError(name, "Undefined variable '" + name.lexeme + "'.");
-    }
-
-    void define(String name, Object value) {
-        values.put(name, value);
     }
 }

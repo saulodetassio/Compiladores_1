@@ -1,11 +1,15 @@
 package main.java.com.craftinginterpreters.lox;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     final Environment globals = new Environment();
     private Environment environment = globals;
+    // NOVO: Mapa para armazenar as distâncias das variáveis resolvidas.
+    private final Map<Expr, Integer> locals = new HashMap<>();
 
     Interpreter() {
         globals.define("clock", new LoxCallable() {
@@ -31,7 +35,50 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
             Lox.runtimeError(error);
         }
     }
+    
+    // NOVO: Método para o Resolver popular o mapa de 'locals'.
+    void resolve(Expr expr, int depth) {
+        locals.put(expr, depth);
+    }
 
+    // O restante do código de execução e os métodos auxiliares permanecem os mesmos.
+    // ...
+
+    // --- MUDANÇAS PRINCIPAIS ESTÃO NOS MÉTODOS ABAIXO ---
+
+    @Override
+    public Object visitAssignExpr(Expr.Assign expr) {
+        Object value = evaluate(expr.value);
+        
+        // ATUALIZADO: Usa o mapa 'locals' para atribuir o valor na distância correta.
+        Integer distance = locals.get(expr);
+        if (distance != null) {
+            environment.assignAt(distance, expr.name, value);
+        } else {
+            globals.assign(expr.name, value);
+        }
+
+        return value;
+    }
+
+    @Override
+    public Object visitVariableExpr(Expr.Variable expr) {
+        // ATUALIZADO: Usa o método auxiliar lookUpVariable.
+        return lookUpVariable(expr.name, expr);
+    }
+    
+    // NOVO: Método auxiliar para buscar variáveis usando a informação de resolução.
+    private Object lookUpVariable(Token name, Expr expr) {
+        Integer distance = locals.get(expr);
+        if (distance != null) {
+            return environment.getAt(distance, name.lexeme);
+        } else {
+            return globals.get(name);
+        }
+    }
+    
+    // --- O RESTANTE DO CÓDIGO PERMANECE IGUAL ---
+    
     private Object evaluate(Expr expr) {
         return expr.accept(this);
     }
@@ -66,7 +113,6 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     @Override
     public Void visitFunctionStmt(Stmt.Function stmt) {
-        // AJUSTE AQUI: Passamos o 'environment' atual para criar o closure.
         LoxFunction function = new LoxFunction(stmt, environment);
         environment.define(stmt.name.lexeme, function);
         return null;
@@ -104,13 +150,6 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         }
         environment.define(stmt.name.lexeme, value);
         return null;
-    }
-
-    @Override
-    public Object visitAssignExpr(Expr.Assign expr) {
-        Object value = evaluate(expr.value);
-        environment.assign(expr.name, value);
-        return value;
     }
 
     @Override
@@ -215,11 +254,6 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
                 return -(double)right;
         }
         return null; // Unreachable.
-    }
-
-    @Override
-    public Object visitVariableExpr(Expr.Variable expr) {
-        return environment.get(expr.name);
     }
 
     private boolean isTruthy(Object object) {
