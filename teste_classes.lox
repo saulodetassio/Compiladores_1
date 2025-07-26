@@ -1,0 +1,43 @@
+// Script para testar a implementação de classes (Capítulo 12)
+
+print "--- Testando Classes e Metodos ---";
+
+class Doughnut {
+  cook() {
+    print "Frite ate dourar.";
+  }
+}
+
+class BostonCream < Doughnut {
+  cook() {
+    super.cook(); // Teste de 'super'
+    print "Recheie com creme e cubra com chocolate.";
+  }
+}
+
+print "Criando uma instancia de BostonCream e chamando o metodo:";
+BostonCream().cook();
+
+
+print ""; // Linha em branco para separar
+print "--- Testando 'this', 'init' e propriedades ---";
+
+class Box {
+  init(item1, item2) {
+    this.item1 = item1; // Teste de 'this' e atribuição de propriedade
+    this.item2 = item2;
+  }
+
+  showItems() {
+    print "A caixa contem:";
+    print this.item1; // Teste de acesso a propriedade com 'this'
+    print this.item2;
+  }
+}
+
+var caixa = Box("um livro", "uma caneta"); // Teste de chamada de classe com 'init'
+caixa.showItems(); // Teste de chamada de método em instância
+
+// Teste de acesso direto a propriedade
+print "Acessando a propriedade diretamente:";
+print caixa.item1;

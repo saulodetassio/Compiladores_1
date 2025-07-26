@@ -1,4 +1,4 @@
-package main.java.com.craftinginterpreters.lox; // CORRIGIDO AQUI
+package main.java.com.craftinginterpreters.lox; 
 
 import java.util.ArrayList;
 import java.util.HashMap;

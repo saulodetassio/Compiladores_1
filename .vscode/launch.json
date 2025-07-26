@@ -17,6 +17,14 @@
         },
         {
             "type": "java",
+            "name": "🧪 Executar Teste de Classes (Cap. 12)",
+            "request": "launch",
+            "mainClass": "main.java.com.craftinginterpreters.lox.Lox",
+            "projectName": "Compiladores_1_32767e70",
+            "args": "teste_classes.lox"
+        },
+        {
+            "type": "java",
             "name": "🧪 Executar Teste de Funções (Cap. 10)",
             "request": "launch",
             "mainClass": "main.java.com.craftinginterpreters.lox.Lox",

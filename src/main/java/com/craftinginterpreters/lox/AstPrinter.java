@@ -1,11 +1,36 @@
 package main.java.com.craftinginterpreters.lox;
 
+
 import java.util.List;
 
 class AstPrinter implements Expr.Visitor<String> {
   String print(Expr expr) {
     return expr.accept(this);
   }
+
+  // --- MÉTODOS VISIT FALTANTES ADICIONADOS ---
+
+  @Override
+  public String visitGetExpr(Expr.Get expr) {
+    return parenthesize("." + expr.name.lexeme, expr.object);
+  }
+
+  @Override
+  public String visitSetExpr(Expr.Set expr) {
+    return parenthesize("= ." + expr.name.lexeme, expr.object, expr.value);
+  }
+
+  @Override
+  public String visitSuperExpr(Expr.Super expr) {
+    return parenthesize("super." + expr.method.lexeme);
+  }
+
+  @Override
+  public String visitThisExpr(Expr.This expr) {
+    return "this";
+  }
+
+  // --- MÉTODOS ANTERIORES ---
 
   @Override
   public String visitCallExpr(Expr.Call expr) {

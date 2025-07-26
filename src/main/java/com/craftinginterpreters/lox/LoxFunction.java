@@ -1,15 +1,25 @@
 package main.java.com.craftinginterpreters.lox;
 
-
 import java.util.List;
-
 class LoxFunction implements LoxCallable {
     private final Stmt.Function declaration;
-    private final Environment closure; // Adicionado no Capítulo 11, mas bom já ter.
+    private final Environment closure;
+    private final boolean isInitializer;
 
-    LoxFunction(Stmt.Function declaration, Environment closure) {
+    LoxFunction(Stmt.Function declaration, Environment closure, boolean isInitializer) {
+        this.isInitializer = isInitializer;
         this.closure = closure;
         this.declaration = declaration;
+    }
+
+    /**
+     * Cria um novo ambiente para o método, vinculando a instância (this) a ele.
+     * Isso garante que, quando o método for chamado, 'this' esteja disponível em seu escopo.
+     */
+    LoxFunction bind(LoxInstance instance) {
+        Environment environment = new Environment(closure);
+        environment.define("this", instance);
+        return new LoxFunction(declaration, environment, isInitializer);
     }
 
     @Override
@@ -19,22 +29,23 @@ class LoxFunction implements LoxCallable {
 
     @Override
     public Object call(Interpreter interpreter, List<Object> arguments) {
-        // Cria um novo ambiente para a função, aninhado no ambiente onde a função foi declarada (closure).
-        Environment environment = new Environment(closure); 
+        Environment environment = new Environment(closure);
         for (int i = 0; i < declaration.params.size(); i++) {
             environment.define(declaration.params.get(i).lexeme, arguments.get(i));
         }
 
-        // --- A CORREÇÃO ESTÁ AQUI ---
         try {
-            // Executa o corpo da função no novo ambiente.
             interpreter.executeBlock(declaration.body, environment);
         } catch (Return returnValue) {
-            // Se uma exceção 'Return' for lançada, a capturamos e retornamos seu valor.
+            // Se for um inicializador, um 'return' explícito retorna 'this'.
+            if (isInitializer) return closure.getAt(0, "this");
+            
             return returnValue.value;
         }
 
-        // Se a função terminar sem um 'return' explícito, ela retorna 'nil' (null).
+        // Se for um inicializador, retorna 'this' implicitamente no final.
+        if (isInitializer) return closure.getAt(0, "this");
+        
         return null;
     }
 
